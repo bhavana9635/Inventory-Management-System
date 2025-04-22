@@ -1,0 +1,13 @@
+com\possession\config\WebConfig.class
+com\possession\service\PossessionService.class
+com\possession\model\Possession.class
+com\possession\repository\PossessionRepository.class
+com\possession\model\DuplicateGroup.class
+com\possession\service\ReminderService.class
+com\possession\controller\CustomErrorController.class
+com\possession\controller\PossessionController.class
+com\possession\repository\ReminderRepository.class
+com\possession\PossessionManagerApplication.class
+com\possession\controller\ReminderController.class
+com\possession\model\Reminder.class
+com\possession\controller\HomeController.class

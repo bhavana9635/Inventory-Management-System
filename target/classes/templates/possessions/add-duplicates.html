@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Add Duplicate Possessions</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container">
+            <div class="content-header">
+                <h2 class="content-title">Add Duplicate Possessions</h2>
+            </div>
+
+            <div class="card">
+                <form action="/possessions/duplicates/add" method="post" class="p-4">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name1">Name 1</label>
+                                <input type="text" class="form-control" id="name1" name="name1" value="iPhone 13" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name2">Name 2</label>
+                                <input type="text" class="form-control" id="name2" name="name2" value="iPhone 13 Pro" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="category1">Category 1</label>
+                                <input type="text" class="form-control" id="category1" name="category1" value="Electronics" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="category2">Category 2</label>
+                                <input type="text" class="form-control" id="category2" name="category2" value="Electronics" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="serialNumber1">Serial Number 1</label>
+                                <input type="text" class="form-control" id="serialNumber1" name="serialNumber1" value="IPH13-001" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="serialNumber2">Serial Number 2</label>
+                                <input type="text" class="form-control" id="serialNumber2" name="serialNumber2" value="IPH13-001" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="location1">Location 1</label>
+                                <input type="text" class="form-control" id="location1" name="location1" value="Home Office">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="location2">Location 2</label>
+                                <input type="text" class="form-control" id="location2" name="location2" value="Work Office">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="value1">Value 1</label>
+                                <input type="number" class="form-control" id="value1" name="value1" value="999.99" step="0.01">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="value2">Value 2</label>
+                                <input type="number" class="form-control" id="value2" name="value2" value="1099.99" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="purchaseDate1">Purchase Date 1</label>
+                                <input type="date" class="form-control" id="purchaseDate1" name="purchaseDate1" value="2024-01-01">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="purchaseDate2">Purchase Date 2</label>
+                                <input type="date" class="form-control" id="purchaseDate2" name="purchaseDate2" value="2024-01-15">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="description1">Description 1</label>
+                                <textarea class="form-control" id="description1" name="description1" rows="3">Latest iPhone model</textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="description2">Description 2</label>
+                                <textarea class="form-control" id="description2" name="description2" rows="3">Latest iPhone Pro model</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="/possessions" class="btn btn-secondary">
+                            <i class="fas fa-times me-1"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i> Add Duplicates
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

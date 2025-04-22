@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title>Reminders</title>
+    <style>
+        .reminders-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-container {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .search-button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: #357abd;
+        }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-weight: 500;
+            color: #495057;
+            margin: 0;
+        }
+
+        .status-filter {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .status-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .status-btn.active {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .reminders-table {
+            margin-top: 1rem;
+        }
+
+        .reminders-table th {
+            font-weight: 600;
+            color: #495057;
+            background-color: #f8f9fa;
+        }
+
+        .reminders-table td {
+            vertical-align: middle;
+        }
+
+        .reminder-title {
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        .reminder-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .reminder-date {
+            font-weight: 500;
+        }
+
+        .reminder-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.25rem 0.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 0;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #4a90e2;
+        }
+
+        .empty-state h3 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .filter-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .filter-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .status-filter {
+                flex-wrap: wrap;
+            }
+            
+            .search-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="container">
+            <div class="content-header">
+                <h1 class="content-title">Reminders</h1>
+                <a href="/reminders/new" class="add-button">
+                    <i class="fas fa-plus"></i> Add New Reminder
+                </a>
+            </div>
+
+            <div class="reminders-container">
+                <div class="search-container">
+                    <form action="/reminders/search" method="get" class="search-form">
+                        <input type="text" name="searchTerm" class="search-input" placeholder="Search reminders...">
+                        <button type="submit" class="search-button">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </form>
+                </div>
+
+                <div class="filter-container">
+                    <div class="filter-group">
+                        <h6 class="filter-label">Status:</h6>
+                        <div class="status-filter">
+                            <a th:href="@{/reminders}" class="btn status-btn" 
+                               th:classappend="${#httpServletRequest.requestURI == '/reminders' ? 'btn-primary active' : 'btn-outline-primary'}"
+                               th:text="'All'">All</a>
+                            <a th:href="@{/reminders/upcoming}" class="btn status-btn" 
+                               th:classappend="${#httpServletRequest.requestURI == '/reminders/upcoming' ? 'btn-primary active' : 'btn-outline-primary'}"
+                               th:text="'Upcoming'">Upcoming</a>
+                            <a th:href="@{/reminders/pending}" class="btn status-btn" 
+                               th:classappend="${#httpServletRequest.requestURI == '/reminders/pending' ? 'btn-primary active' : 'btn-outline-primary'}"
+                               th:text="'Pending'">Pending</a>
+                            <a th:href="@{/reminders/completed}" class="btn status-btn" 
+                               th:classappend="${#httpServletRequest.requestURI == '/reminders/completed' ? 'btn-primary active' : 'btn-outline-primary'}"
+                               th:text="'Completed'">Completed</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table reminders-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="reminder : ${reminders}" 
+                                th:class="${reminder.completed ? 'table-secondary' : ''}">
+                                <td>
+                                    <div class="reminder-title" th:text="${reminder.title}">Reminder Title</div>
+                                </td>
+                                <td>
+                                    <span class="reminder-date" th:text="${reminder.reminderDate}">Due Date</span>
+                                </td>
+                                <td>
+                                    <div th:if="${reminder.description}" class="reminder-description" th:text="${reminder.description}"></div>
+                                    <div th:unless="${reminder.description}" class="reminder-description">No description</div>
+                                </td>
+                                <td>
+                                    <div class="reminder-actions">
+                                        <a th:href="@{/reminders/{id}/edit(id=${reminder.id})}" 
+                                           class="btn btn-sm btn-outline-primary action-btn" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a th:href="@{/reminders/{id}/toggle(id=${reminder.id})}" 
+                                           class="btn btn-sm action-btn" 
+                                           th:classappend="${reminder.completed ? 'btn-outline-warning' : 'btn-outline-success'}"
+                                           title="${reminder.completed ? 'Mark as Pending' : 'Mark as Completed'}">
+                                            <i class="fas" th:classappend="${reminder.completed ? 'fa-undo' : 'fa-check'}"></i>
+                                        </a>
+                                        <a th:href="@{/reminders/{id}/delete(id=${reminder.id})}" 
+                                           class="btn btn-sm btn-outline-danger action-btn"
+                                           onclick="return confirm('Are you sure you want to delete this reminder?')"
+                                           title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(reminders)}">
+                                <td colspan="4">
+                                    <div class="empty-state">
+                                        <i class="fas fa-bell-slash"></i>
+                                        <h3>No reminders found</h3>
+                                        <p>Create a new reminder to get started.</p>
+                                        <a href="/reminders/new" class="add-button">
+                                            <i class="fas fa-plus"></i> New Reminder
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
